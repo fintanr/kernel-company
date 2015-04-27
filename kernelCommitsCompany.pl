@@ -15,9 +15,12 @@ use HTML::TreeBuilder::XPath;
 use HTML::TreeBuilder;
 
 my %ourReleases = ();
+my %companyMap = ();
 my $baseUrl = "http://www.remword.com/kps_result/";
 my $outFile = "kernel-commits-company.csv";
+my $nameMap = "name-mapping.txt";
 
+loadCompanyNameMaps();
 buildReleaseList();
 
 foreach my $key (sort(keys(%ourReleases)) ) {
@@ -99,7 +102,8 @@ sub extractCompanies {
             my $commitCount = $3;
             $company =~ s/\,/ /g;
             $ourReleases{$release}->{'commits'}->[$count]->{'pos'} = $pos;
-            $ourReleases{$release}->{'commits'}->[$count]->{'company'} = $company;
+            $ourReleases{$release}->{'commits'}->[$count]->{'company'} = 
+                    companyCleanUps($company);
             $ourReleases{$release}->{'commits'}->[$count]->{'count'} = $commitCount;
         }
     }
@@ -121,4 +125,27 @@ sub printDataSet {
         }
     }
     close(OUT);
+}
+
+sub companyCleanUps {
+    
+    my ( $name ) = @_;
+    my $val = $name;
+    if ( defined($companyMap{$name}) ) {
+        $val = $companyMap{$name};
+    } 
+
+    return($val);
+
+}
+
+sub loadCompanyNameMaps {
+
+    open(IN, $nameMap) || die ("Can't open $nameMap\n");
+    while ( <IN> ) {
+        chomp;
+        my ( $normal, $from ) = split(/\|/, $_);
+        $companyMap{$from} = $normal;
+    }
+    close(IN);
 }
