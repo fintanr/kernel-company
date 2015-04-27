@@ -1,10 +1,11 @@
 # Kernel Commits to Stockprice Analysis
 
 During a recent conversation about what influences a companys performance I
-pondered if the level of kernel commits has any discernable relationship to stockprice.
+pondered a question: "does the level of kernel commits have any discernable relationship 
+to a companies stockprice?"
 
 An interesting question? Well I thought it was interesting enough to do some
-further analysis as a fun exercise.  We selected a number of publicly listed companies 
+further analysis as a fun exercise. We selected a number of publicly listed companies 
 who contribute code relatively frequently to the Linux kernel for our analysis.
 
 ## Findings
